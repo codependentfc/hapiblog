@@ -4,7 +4,7 @@
   "description": "A blog using hapi",
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/lab/bin/lab -c -v"
+    "test": "lab -c -v"
   },
   "author": "Codepedent",
   "license": "ISC",
