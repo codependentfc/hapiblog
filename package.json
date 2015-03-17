@@ -1,0 +1,23 @@
+{
+  "name": "hapiblog",
+  "version": "1.0.0",
+  "description": "A blog using hapi",
+  "main": "server.js",
+  "scripts": {
+    "test": "./node_modules/lab/bin/lab -c -v"
+  },
+  "author": "Codepedent",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "gulp": "^3.8.11",
+    "gulp-lab": "^1.0.4",
+    "lab": "^5.5.0"
+  },
+  "dependencies": {
+    "bell": "^2.2.0",
+    "hapi": "^8.4.0",
+    "hapi-auth-cookie": "^2.0.0",
+    "joi": "^6.0.8"
+  }
+}
