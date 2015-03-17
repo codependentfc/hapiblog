@@ -3,6 +3,8 @@ var server 	= new Hapi.Server();
 var Joi = require("joi");
 var Bell = require("bell");
 var Cookie = require("hapi-auth-cookie");
+var jade = require("jade");
+var Path = require("path");
 
 /* $lab:coverage:off$ */
 server.connection({
@@ -11,13 +13,20 @@ server.connection({
 });
 /* $lab:coverage:on$ */
 
+//Pathing for our jade templates
+server.views({
+        engines: {
+        	jade: require('jade')
+        },
+        path: Path.join(__dirname, '../views')
+    });
+
+//Routes
 server.route({
 	method: 'GET',
 	path: '/',
-	config: {
-		handler: function(request, reply) {
-			reply("Welcome to the homepage");
-		}
+	handler: function(request, reply) {
+		reply.view('homepage', {name: "curious creature"});	
 	}
 });
 
