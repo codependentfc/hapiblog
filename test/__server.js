@@ -1,85 +1,141 @@
 var lab 	= exports.lab = require("lab").script();
 var assert 	= require("chai").assert;
 var server 	= require("../api/server.js");
+//______________________Jason's famous line break________________________//
 
-lab.experiment("A basic server test: ", function() {
+lab.experiment("Invalid route", function() {
 
 	var options = {
-		url: "/",
+		url: "/fake/link",
 		method: "GET"
 	};
 
-	lab.test("The home page ", function(done) {
+	lab.test("Return a 404 status code", function(done) {
 
 		server.inject(options, function(response) {
-
-			assert.equal(response.statusCode, 200, "should return a 200 status code");
-			assert.equal(typeof response.result, "string", "should reply with a string");
-			assert.equal(response.result, "Welcome to the homepage", "it should return our string");
+			assert.equal(response.statusCode, 404, "it should return da 404");
 			done();
 		});
 	});
 });
 
-lab.experiment("Testing the results from a new post: ", function() {
+//One experiment for one end point '/', with multiple tests for GET and POST
+//Looks better or prefer it seperate?
+lab.experiment("Homepage: ", function() {
+
+	var options_get = {
+		url: "/",
+		method: "GET"
+	};
+
+	lab.test("The home page should exist", function(done) {
+
+		server.inject(options_get, function(response) {
+
+			assert.equal(response.statusCode, 200, "it should return a 200 status code");
+			assert.equal(typeof response.result, "string", "it should reply with a string");
+			done();
+		});
+	});
+
+	var options_post = {
+		url: "/",
+		method: "POST"
+	};
+
+	lab.test("New post should be added", function(done) {
+
+		server.inject(options_post, function(response) {
+
+			assert.equal(response.statusCode, 200, "it should return a 200 status code");
+			assert.equal(typeof response.result, "string", "it should reply with a string");
+			assert.equal(response.result, "New Post Added", "it should return our string");
+			done();
+		});
+	});
+});
+//_______________________________________________________________________//
+
+lab.experiment("Jade page: ", function() {
+
+	var options = {
+		url: "/jade",
+		method: "GET"
+	};
+
+	lab.test("Jade page should exist ", function(done) {
+
+		server.inject(options, function(response) {
+
+			assert.equal(response.statusCode, 200, "it should return a 200 status code");
+			assert.equal(typeof response.result, "string", "it should reply with a string");
+			done();
+		});
+	});
+});
+//_______________________________________________________________________//
+
+lab.experiment("New posts: ", function() {
 
 	var options = {
 		url: "/",
 		method: "POST"
 	};
 
-	lab.test("New post", function(done) {
+	lab.test("New post should be added", function(done) {
 
 		server.inject(options, function(response) {
 
-			assert.equal(response.statusCode, 200, "should return a 200 status code");
-			assert.equal(typeof response.result, "string", "should reply with a string");
+			assert.equal(response.statusCode, 200, "it should return a 200 status code");
+			assert.equal(typeof response.result, "string", "it should reply with a string");
 			assert.equal(response.result, "New Post Added", "it should return our string");
 			done();
 		});
 	});
 });
+//_______________________________________________________________________//
 
-lab.experiment("Testing the blog post: ", function() {
+lab.experiment("Every blog post page: ", function() {
 
 	var options = {
 		url: "/{id}",
 		method: "GET"
 	};
 
-	lab.test("Blog post should exist", function(done) {
+	lab.test(" A blog post should exist", function(done) {
 
 		server.inject(options, function(response) {
 
-			assert.equal(response.statusCode, 200, "should return a 200 status code");
-			assert.equal(typeof response.result, "string", "should reply with a string");
+			assert.equal(response.statusCode, 200, "it should return a 200 status code");
+			assert.equal(typeof response.result, "string", "it should reply with a string");
 			assert.equal(response.result, "Blog Post here, id: {id}", "it should return our string");
 			done();
 		});
 	});
 });
+//_______________________________________________________________________//
 
-
-lab.experiment("Testing our edit page: ", function() {
+lab.experiment("Edit main page: ", function() {
 
 	var options = {
 		url: "/edit",
 		method: "GET"
 	};
 
-	lab.test("Edit page should exist ", function(done) {
+	lab.test("Edit main page should exist ", function(done) {
 
 		server.inject(options, function(response) {
 
-			assert.equal(response.statusCode, 200, "should return a 200 status code");
-			assert.equal(typeof response.result, "string", "should reply with a string");
+			assert.equal(response.statusCode, 200, "it should return a 200 status code");
+			assert.equal(typeof response.result, "string", "it should reply with a string");
 			assert.equal(response.result, "CMS page", "it should return our string");
 			done();
 		});
 	});
 });
+//_______________________________________________________________________//
 
-lab.experiment("Testing our edit page for individual posts ", function() {
+lab.experiment("Edit blog post page", function() {
 
 	var options = {
 		url: "/edit/{id}",
@@ -90,16 +146,17 @@ lab.experiment("Testing our edit page for individual posts ", function() {
 
 		server.inject(options, function(response) {
 
-			assert.equal(response.statusCode, 200, "should return a 200 status code");
-			assert.equal(typeof response.result, "string", "should reply with a string");
+			assert.equal(response.statusCode, 200, "it should return a 200 status code");
+			assert.equal(typeof response.result, "string", "it should reply with a string");
 			assert.equal(response.result, "CMS page with post: {id} loaded for editing", "it should return our string");
 			done();
 		});
 	});
 });
+//_______________________________________________________________________//
 
-
-lab.experiment("Checking the posts", function() {
+//Tests TODO
+lab.experiment("Posts page: ", function() {
 
 	var options = {
 		url: "/posts",
@@ -117,8 +174,9 @@ lab.experiment("Checking the posts", function() {
 		});
 	});
 });
+//_______________________________________________________________________//
 
-lab.experiment("Making a post", function() {
+lab.experiment("Posts page", function() {
 
 	var options = {
 		url: "/posts",
@@ -130,34 +188,16 @@ lab.experiment("Making a post", function() {
 		}
 	};
 
-	lab.test("with valid fields", function(done) {
+	lab.test("Return valid fields", function(done) {
 
 		server.inject(options, function(response) {
-			assert.equal(response.statusCode, 201, "should return a 201 CREATED status code");
-			assert.deepEqual(response.result, options.payload, "should reply with the created post's content");
+			assert.equal(response.statusCode, 201, "it should return a 201 CREATED status code");
+			assert.deepEqual(response.result, options.payload, "it should reply with the created post's content");
 			done();
 		});
 	});
 });
-
-lab.experiment("Error for the trolls", function() {
-
-	var options = {
-		url: "/fake/nevergonnagiveyouup",
-		method: "GET"
-	};
-
-	lab.test("Return a sexy 404 status code", function(done) {
-
-		server.inject(options, function(response) {
-			assert.equal(response.statusCode, 404, "it should return da 404");
-			done();
-		});
-	});
-});
-
-
-
+//_______________________________________________________________________//
 
 lab.experiment("User authentication", function() {
 
@@ -199,9 +239,9 @@ lab.experiment("User authentication", function() {
 		};
 
 		server.inject(badlogin, function(response) {
-			assert.equal(response.statusCode, 401, "should return a 401 status code");
-			assert.equal(response.result.message, "Invalid username or password", "should return an error message");
-			assert.equal(response.cookie, undefined, "should not give us a cookie");
+			assert.equal(response.statusCode, 401, "it should return a 401 status code");
+			assert.equal(response.result.message, "Invalid username or password", "it should return an error message");
+			assert.equal(response.cookie, undefined, "it should not give us a cookie");
 			done();
 		});
 	});
