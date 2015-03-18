@@ -20,4 +20,5 @@ It **should** be up and running
 
 Let us know if you have any issues or comments
 
-To run tests use '''npm test'''. Ensure you have lab and gulp installed globally.
+##Tests
+Ensure you have lab and gulp installed globally, then use '''npm test'''
