@@ -6,7 +6,7 @@ Our objective for our 8th week here at Founders & Coders is to create a blog usi
 
 ##Getting Started
 
-Why not give our blog a go yourself? First things first:
+Why not give our blog a go yourself? First thing's first:
 
 * Clone our repo using ```git clone https://github.com/codependentfc/hapiblog.git```
 
