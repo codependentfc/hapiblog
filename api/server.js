@@ -1,10 +1,13 @@
 var Hapi 	= require("hapi");
 var server 	= new Hapi.Server();
+var Path = require("path");
+var githubcreds = require("../githubcreds.json");
+
 var Joi = require("joi");
 var Bell = require("bell");
-var Cookie = require("hapi-auth-cookie");
+var AuthCookie = require("hapi-auth-cookie");
+
 var jade = require("jade");
-var Path = require("path");
 
 /* $lab:coverage:off$ */
 server.connection({
@@ -24,9 +27,9 @@ server.views({
 //Routes
 server.route({
 	method: 'GET',
-	path: '/',
+	path: '/jade',
 	handler: function(request, reply) {
-		reply.view('homepage', {name: "curious creature"});	
+		reply.view('homepage', {name: "traveller"});	
 	}
 });
 
@@ -84,5 +87,86 @@ server.route({
     }
 });
 
+
+//Github auth, use your own github application clientId and clientSecret keys
+server.register([Bell, AuthCookie], function (err) {
+    if (err) {
+        console.error(err);
+        return process.exit(1);
+    }
+    var authCookieOptions = {
+        password: 'cookie-encryption-password',
+        cookie: 'hapiblog-auth',
+        isSecure: false
+    };
+
+    server.auth.strategy('hapiblog-cookie', 'cookie', authCookieOptions);
+    var bellAuthOptions = {
+        provider: 'github',
+        password: 'github-encryption-password',
+        clientId: githubcreds.clientId,
+        clientSecret: githubcreds.clientSecret,
+        isSecure: false
+    };
+
+server.auth.strategy('github-oauth', 'bell', bellAuthOptions);
+
+server.auth.default('hapiblog-cookie');
+
+server.route([{
+    method: 'GET',
+    path: '/login',
+    config: {
+        auth: "github-oauth",
+        handler: function (request, reply) {
+            if (true) {
+                request.auth.session.clear();
+                request.auth.session.set(request.auth.credentials);
+                return reply('Hello ' + request.auth.credentials.profile.displayName);
+            }
+            reply('Not logged in...').code(401);    
+        }
+    }
+},
+
+        {
+            method: 'GET',
+            path: '/account',
+            config: {
+                handler: function (request, reply) {
+                    reply(request.auth.credentials.profile);
+                }
+            }
+        },
+
+        {
+            method: 'GET',
+            path: '/',
+            config: {
+                auth: {
+                    mode: 'optional'
+                },
+                handler: function (request, reply) {
+                    if (request.auth.isAuthenticated) {
+                        return reply('welcome back ' + request.auth.credentials.profile.displayName);
+                    }
+                    reply('hello stranger!');
+                }
+            }
+        },
+
+        {
+            method: 'GET',
+            path: '/logout',
+            config: {
+                auth: false,
+                handler: function (request, reply) {
+                    request.auth.session.clear();
+                    reply.redirect("/");
+                }
+            }
+        }
+    ]);
+});
 
 module.exports = server;
