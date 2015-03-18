@@ -20,7 +20,14 @@ It **should** be up and running
 
 Let us know if you have any issues or comments
 
-##Other notes
+------
+
+###Tests
+Ensure you have lab or gulp installed globally, then use ```npm test``` or ```gulp```, respectively.
+
+------
+
+###Other notes
 If you want to store away your credentials, create a file called: creds.json and follow this format:
 
 ```
@@ -36,3 +43,4 @@ If you want to store away your credentials, create a file called: creds.json and
 }
 
 ```
+------
