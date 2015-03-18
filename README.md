@@ -21,4 +21,4 @@ It **should** be up and running
 Let us know if you have any issues or comments
 
 ###Tests
-Ensure you have lab and gulp installed globally, then use ```npm test```
+Ensure you have lab or gulp installed globally, then use ```npm test``` or ```gulp```, respectively.
