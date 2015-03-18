@@ -34,7 +34,7 @@ server.route({
     method: 'GET',
     path: '/{id}',
     handler: function (request, reply) {
-        	reply('Blog Post here, id: ' + request.params.id);
+        	reply('Blog Post here ' + request.params.id);
         }
 });
 
