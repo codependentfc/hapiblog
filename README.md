@@ -4,7 +4,7 @@ Our objective for our 8th week here at Founders & Coders is to create a blog usi
 
 ------
 
-##Getting Started
+###Getting Started
 
 Why not give our blog a go yourself? First thing's first:
 
