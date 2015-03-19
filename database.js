@@ -3,7 +3,7 @@
 
 var mongojs = require("mongojs");
 var creds = require("./creds.json");
-// var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
+var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
 
 // Use this for local database
 var db = mongojs("mylocaldatabase", ['users']);
@@ -25,6 +25,6 @@ db.users.save(user1, function(err, savedUser) {
 db.users.find(user1, function(err, users) {
 	if( err || !users.length) console.log("User " + user.name + " not found.")
 		else users.forEach(function(user) {
-			console.log("User Found! - " + user);
+			console.log("User Found! - " + user.text	);
 		});
 });

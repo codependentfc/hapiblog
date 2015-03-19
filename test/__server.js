@@ -58,7 +58,7 @@ lab.experiment('Homepage: ', function() {
 lab.experiment('User profile page: ', function() {
 
 	var options = {
-		url: '/account',
+		url: '/profile',
 		method: 'GET'
 	};
 
