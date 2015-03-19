@@ -113,6 +113,7 @@ server.register([Bell, AuthCookie], function (err) {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
                     if (request.auth.isAuthenticated) {
+
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
                     reply.view('homepage', {name: "visitor", posts1: "Test title", posts2: "Test name", posts3: "Test content"});
@@ -128,33 +129,32 @@ server.register([Bell, AuthCookie], function (err) {
                 handler: function (request, reply) {
                     if (request.auth.isAuthenticated) {
 
-                        console.log(request);
+                        console.log(request.payload);
                         var account = request.auth.credentials.profile;
                         var name = account.displayName;
-                        var title = "My title";
-                        var context = "My context";
+                        var title = request.payload.title;
+                        var content = request.payload.content;
 
 
-                        function user(author, title, text) {
-                            this.author = author;   
+                        function user(name, title, content) {
+                            this.name = name;   
                             this.title = title;
-                            this.text = text;
+                            this.content = content;
                         }
 
-                        var user1 = new user(name, title, context);
+                        var user1 = new user(name, title, content);
 
                         db.users.save(user1, function(err, savedUser) {
                             if(err || !savedUser) console.log("Error: User " + user.author + " not saved." + err);
-                            else console.log("User " + savedUser.author + " has been saved successfully.");
+                            else console.log("User " + savedUser.name + " has been saved successfully. " + "Blog post: " + savedUser.title + "- " + savedUser.content);
                         });
 
                         db.users.find(user1, function(err, users) {
                             if( err || !users.length) console.log("User " + user.name + " not found.")
                                 else users.forEach(function(user) {
-                                    console.log("User Found! - " + user.text    );
+                                    console.log("User Found! - " + user.name   );
                                 });
                         });
-
 
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
@@ -199,6 +199,24 @@ server.register([Bell, AuthCookie], function (err) {
                 }
             }
         },
+
+          {
+            method: 'GET',
+            path: '/posts',
+            config: {
+                auth: {mode: 'optional'},
+                handler: function (request, reply) {
+                    var data;
+                    db.users.find(function(err, docs) {
+                        console.log(docs)
+                        data = docs;
+                        });
+
+                        reply('Blog posts: ' + data);
+                }
+            }
+        },
+
 
         {
             method: 'GET',

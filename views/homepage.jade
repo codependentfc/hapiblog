@@ -8,11 +8,11 @@ block content
 		.form-group
 			label.control-label.col-sm-2(for='title') Title:
 			.col-sm-10
-				input.form-control(type='text', placeholder='Enter title' required)
+				input.form-control(type='text', placeholder='Enter title', name='title' required)
 		.form-group
 			label.control-label.col-sm-2(for='content') Write something:
 			.col-sm-10
-				textarea.form-control(rows='10', placeholder='...' required)
+				textarea.form-control(rows='10', placeholder='...', name='content' required)
 		.form-group
 			.col-sm-offset-2.col-sm-10
 				.checkbox
@@ -23,5 +23,5 @@ block content
 				input.btn.btn-default(type='submit', value='Submit Post')
 
 	.panel.panel-primary
-						.panel-heading #{posts1} | Written by: #{posts2}}
-						.panel-body #{posts3}
+						.panel-heading #{posttitle} | Written by: #{postsname}}
+						.panel-body #{postcontent}
