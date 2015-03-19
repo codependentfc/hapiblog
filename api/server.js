@@ -10,6 +10,10 @@ var AuthCookie = require('hapi-auth-cookie');
 
 var jade = require('jade');
 
+var mongojs = require("mongojs");
+var creds = require("../creds.json");
+var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
+
 /* $lab:coverage:off$ */
 server.connection({
     host: 'localhost',
@@ -71,7 +75,7 @@ server.register([Bell, AuthCookie], function (err) {
 
         {
             method: 'GET',
-            path: '/account',
+            path: '/profile',
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
@@ -84,14 +88,17 @@ server.register([Bell, AuthCookie], function (err) {
                         var link = account.raw.html_url;
                         var followers = account.raw.followers;
                         var following = account.raw.following;
-                        
+
+                        var blog = "blog should go here";
+
                         return reply.view('profile', {
                             name: name,
                             email: email,
                             avatar: avatar,
                             link: link,
                             followers: followers,
-                            following: following
+                            following: following,
+                            blog: blog
                         });
                     }
                     reply.redirect('/login');
@@ -109,6 +116,43 @@ server.register([Bell, AuthCookie], function (err) {
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
                     reply.view('homepage', {name: "visitor"});
+                }
+            }
+        },
+
+         {
+            method: 'POST',
+            path: '/',
+            config: {
+                auth: {mode: 'optional'},
+                handler: function (request, reply) {
+                    if (request.auth.isAuthenticated) {
+
+
+                        function user(author, title, text) {
+                            this.author = author;   
+                            this.title = title;
+                            this.text = text;
+                        }
+
+                        var user1 = new user("Jason", "My title", "Whats up");
+
+                        db.users.save(user1, function(err, savedUser) {
+                            if(err || !savedUser) console.log("Error: User " + user.author + " not saved." + err);
+                            else console.log("User " + savedUser.author + " has been saved successfully.");
+                        });
+
+                        db.users.find(user1, function(err, users) {
+                            if( err || !users.length) console.log("User " + user.name + " not found.")
+                                else users.forEach(function(user) {
+                                    console.log("User Found! - " + user.text    );
+                                });
+                        });
+
+
+                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
+                    }
+                    reply.view('homepage', {name: "visitor", er: "Please login to write a blog post"});
                 }
             }
         },
