@@ -1,5 +1,6 @@
-var Hapi    = require('hapi');
-var server  = new Hapi.Server();
+var Hapi 	= require('hapi');
+var server 	= new Hapi.Server();
+
 var Path = require('path');
 var githubcreds = require('../githubcreds.json');
 
