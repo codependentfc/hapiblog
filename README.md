@@ -22,6 +22,24 @@ Let us know if you have any issues or comments
 
 ------
 
+###Version update
+* Requires github user authentication to write a post
+* Saves post into remote database
+* Views using jade and bootstrap
+* CSS now works
+
+TODO as of 19/03/15: 
+* Display all posts
+* Access individual posts
+* Modularise our code
+* Joi validation
+* Github authentication - removing session cookie fully
+* Design
+* Edit/Delete posts,
+* Other cool stuff :)
+
+------
+
 ###Tests
 Ensure you have lab or gulp installed globally, then use ```npm test``` or ```gulp```, respectively.
 
