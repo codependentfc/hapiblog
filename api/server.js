@@ -68,7 +68,6 @@ server.register([Bell, AuthCookie], function (err) {
             }
         },
 
-
         {
             method: 'GET',
             path: '/login',
@@ -133,7 +132,7 @@ server.register([Bell, AuthCookie], function (err) {
             }
         },
 
-         {
+        {
             method: 'POST',
             path: '/',
             config: {
@@ -211,21 +210,15 @@ server.register([Bell, AuthCookie], function (err) {
             }
         },
 
-          {
+        {
             method: 'GET',
             path: '/posts',
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    var array = [];
                     db.users.find(function(err, docs) {
-                       for(i=0;i<docs.length;i++) {
-                        console.log(JSON.stringify(docs[i]));
-                        array.push(JSON.stringify(docs[i]));
-                       }
-                        });
-
-                        reply(array);
+                        reply(docs);
+                    });
                 }
             }
         },
