@@ -36,7 +36,6 @@ TODO as of 19/03/15:
 * Github authentication - removing session cookie fully
 * Design
 * Edit/Delete posts
-* Other cool stuff
 ------
 
 ###Tests
