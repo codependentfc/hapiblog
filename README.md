@@ -22,6 +22,21 @@ Let us know if you have any issues or comments
 
 ------
 
+###Version update
+* Requires github user authentication to write a post
+* Saves post into remote database
+* Views using jade and bootstrap
+
+TODO as of 19/03/15: 
+* CSS routing
+* Display all posts
+* Access individual posts
+* Design
+** Edit/Delete posts,
+** Other cool stuff :)
+
+------
+
 ###Tests
 Ensure you have lab or gulp installed globally, then use ```npm test``` or ```gulp```, respectively.
 
@@ -44,16 +59,3 @@ If you want to store away your credentials, create a file called: creds.json and
 
 ```
 ------
-
-###Version update
-* Requires github user authentication to write a post
-* Saves post into remote database
-* Views using jade and bootstrap
-
-TODO as of 19/03/15: 
-* CSS routing
-* Display all posts
-* Access individual posts
-* Design
-** Edit/Delete posts,
-** Other cool stuff :)
