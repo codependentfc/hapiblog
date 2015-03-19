@@ -124,6 +124,7 @@ server.register([Bell, AuthCookie], function (err) {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
                     if (request.auth.isAuthenticated) {
+                        console.log("database connected to: " + db.users1);
 
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
@@ -138,6 +139,7 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
+                    console.log("is it working?");
                     if (request.auth.isAuthenticated) {
 
                         var account = request.auth.credentials.profile;
@@ -145,12 +147,11 @@ server.register([Bell, AuthCookie], function (err) {
                         var title = request.payload.title;
                         var content = request.payload.content;
 
-
                         function user(name, title, content) {
                             this.name = name;   
                             this.title = title;
                             this.content = content;
-                        }
+                        };
 
                         var user1 = new user(name, title, content);
 
@@ -162,7 +163,7 @@ server.register([Bell, AuthCookie], function (err) {
                         db.users.find(user1, function(err, users) {
                             if( err || !users.length) console.log("User " + user.name + " not found.")
                                 else users.forEach(function(user) {
-                                    console.log("User Found! - " + user.name   );
+                                    console.log("User Found! - " + user.name);
                                 });
                         });
 
