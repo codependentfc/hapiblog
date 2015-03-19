@@ -138,14 +138,16 @@ server.register([Bell, AuthCookie], function (err) {
             }
         },
 
-//routes not using
-        // {
-        //     method: 'GET',
-        //     path: '/blog/{id}',
-        //     handler: function (request, reply) {
-        //             reply('Blog Post here ' + request.params.id);
-        //         }
-        // },
+        {
+            method: 'GET',
+            path: '/blog/{id}',
+            config: {
+                auth: {mode: 'optional'},
+                handler: function (request, reply) {
+                        reply('Your blog post should have an id of: ' + request.params.id);
+                }
+            }
+        },
 
         {
             method: 'GET',
@@ -156,8 +158,20 @@ server.register([Bell, AuthCookie], function (err) {
                     reply.view('edit');
                 }
             }
+        },
+
+        {
+            method: 'GET',
+            path: '/edit/{id}',
+            config: {
+                auth: {mode: 'optional'},
+                handler: function(request, reply) {
+                    reply('Your blog post should have an id of: ' + request.params.id);
+                }
+            }
         }
 
+//routes not using
         // {
         //     method: 'GET',
         //     path: '/edit/{id}',
