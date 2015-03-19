@@ -35,17 +35,8 @@ TODO as of 19/03/15:
 * Joi validation
 * Github authentication - removing session cookie fully
 * Design
-* Edit/Delete posts,
+* Edit/Delete posts
 * Other cool stuff :)
-=======
-
-TODO as of 19/03/15: 
-* Display all posts
-* Access individual posts
-* Design
-* Edit/Delete posts,
-* Other cool stuff :)
-
 ------
 
 ###Tests
