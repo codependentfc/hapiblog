@@ -1,7 +1,7 @@
-body {
-	text-transform: uppercase;
-}
-
 .coyote li {
 	display: inline-block;
+}
+
+.navbar {
+	padding: 5px;
 }
