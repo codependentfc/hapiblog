@@ -29,6 +29,7 @@ server.views({
         path: Path.join(__dirname, '../views')
     });
 
+
 //Github auth, use your own github application clientId and clientSecret keys
 server.register([Bell, AuthCookie], function (err) {
     if (err) {
@@ -56,6 +57,17 @@ server.register([Bell, AuthCookie], function (err) {
 
 //ROUTING
     server.route([
+
+         {
+            method: 'GET',
+            path: '/public/css/{filename}',
+            handler: function(request, reply) {
+                console.log(request.params.filename, __dirname);
+                console.log(__dirname + "/../public/css/" + request.params.filename);
+                reply.file(__dirname + "/../public/css/" + request.params.filename);
+            }
+        },
+
 
         {
             method: 'GET',

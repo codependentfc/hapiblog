@@ -23,7 +23,7 @@ db.users.save(user1, function(err, savedUser) {
 });
 
 db.users.find(user1, function(err, users) {
-	if( err || !users.length) console.log("User " + user.name + " not found.")
+	if( err || !users.length) console.log("User " + user.name + " not found.");
 		else users.forEach(function(user) {
 			console.log("User Found! - " + user.text	);
 		});
