@@ -4,7 +4,7 @@ Our objective for our 8th week here at Founders & Coders is to create a blog usi
 
 ------
 
-##Getting Started
+###Getting Started
 
 Why not give our blog a go yourself? First thing's first:
 
@@ -19,3 +19,28 @@ Why not give our blog a go yourself? First thing's first:
 It **should** be up and running
 
 Let us know if you have any issues or comments
+
+------
+
+###Tests
+Ensure you have lab or gulp installed globally, then use ```npm test``` or ```gulp```, respectively.
+
+------
+
+###Other notes
+If you want to store away your credentials, create a file called: creds.json and follow this format:
+
+```
+{
+	"dbname": "<your db user name>",
+	"dbpwd": "<your db user password>"
+	"dburl": "<your db access url>"
+}
+
+{
+	"clientId": "<your github app clientId>",
+	"clientSecret": "<your github app clientSecret key>"
+}
+
+```
+------
