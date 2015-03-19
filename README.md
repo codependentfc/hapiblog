@@ -44,3 +44,10 @@ If you want to store away your credentials, create a file called: creds.json and
 
 ```
 ------
+
+###Version update
+-Requires github user authentication to write a post
+-Saves post into remote database
+-Views using jade and bootstrap
+
+-TODO: 0) CSS routing, 1) Display all posts, 2) Access individual posts, 3) Design, 4) Edit/Delete posts, 5) Other cool stuff :)
