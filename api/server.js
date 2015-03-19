@@ -115,7 +115,7 @@ server.register([Bell, AuthCookie], function (err) {
                     if (request.auth.isAuthenticated) {
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
-                    reply.view('homepage', {name: "visitor"});
+                    reply.view('homepage', {name: "visitor", posts1: "Test title", posts2: "Test name", posts3: "Test content"});
                 }
             }
         },
@@ -128,6 +128,12 @@ server.register([Bell, AuthCookie], function (err) {
                 handler: function (request, reply) {
                     if (request.auth.isAuthenticated) {
 
+                        console.log(request);
+                        var account = request.auth.credentials.profile;
+                        var name = account.displayName;
+                        var title = "My title";
+                        var context = "My context";
+
 
                         function user(author, title, text) {
                             this.author = author;   
@@ -135,7 +141,7 @@ server.register([Bell, AuthCookie], function (err) {
                             this.text = text;
                         }
 
-                        var user1 = new user("Jason", "My title", "Whats up");
+                        var user1 = new user(name, title, context);
 
                         db.users.save(user1, function(err, savedUser) {
                             if(err || !savedUser) console.log("Error: User " + user.author + " not saved." + err);
