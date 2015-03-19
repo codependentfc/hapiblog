@@ -170,7 +170,7 @@ lab.experiment('Posts page', function() {
 
 		server.inject(options, function(response) {
 			assert.equal(response.statusCode, 201, 'it should return a 201 CREATED status code');
-			assert.deepEqual(response.result, options.payload, 'it should reply with the created post's content');
+			assert.deepEqual(response.result, options.payload, 'it should reply with the created posts content');
 			done();
 		});
 	});
