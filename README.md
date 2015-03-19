@@ -51,9 +51,9 @@ If you want to store away your credentials, create a file called: creds.json and
 * Views using jade and bootstrap
 
 TODO as of 19/03/15: 
-** CSS routing
-** Display all posts
-** Access individual posts
-** Design
+* CSS routing
+* Display all posts
+* Access individual posts
+* Design
 ** Edit/Delete posts,
 ** Other cool stuff :)
