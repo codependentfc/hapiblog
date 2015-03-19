@@ -8,16 +8,14 @@ html
 	body
 		header
 			.navbar.navbar-default
-				ul.nav.nav-pills.nav-justified
+				ul.nav.nav-pills.coyote
 					li.active(role='presentation')
-					a(href='/') Home
-				ul.nav.nav-pills.nav-justified
+						a(href='/') Home
 					li.active(role='presentation')
-					a(href='/profile') Profile
-				ul.nav.nav-pills.nav-justified
-					li.active(role='presentation')
-					a(href='/logout') Logout
-		
+						a(href='/profile') Profile
+					li.active.pull-right(role='presentation')
+						a(href='/logout') Logout
+
 		.container
 			block content
 
