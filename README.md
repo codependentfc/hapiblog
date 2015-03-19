@@ -39,7 +39,7 @@ TODO as of 19/03/15:
 * Design
 * Edit/Delete posts
 * Other cool stuff :)
-* 
+
 ------
 
 ###Tests
