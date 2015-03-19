@@ -1,3 +1,5 @@
+
+Other cool stuff :)
 #hapiblog
 
 Our objective for our 8th week here at Founders & Coders is to create a blog using the framework Hapi.js.
@@ -36,6 +38,8 @@ TODO as of 19/03/15:
 * Github authentication - removing session cookie fully
 * Design
 * Edit/Delete posts
+* Other cool stuff :)
+* 
 ------
 
 ###Tests
