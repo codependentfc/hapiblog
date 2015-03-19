@@ -61,7 +61,7 @@ server.register([Bell, AuthCookie], function (err) {
                     if (true) {
                         request.auth.session.clear();
                         request.auth.session.set(request.auth.credentials);
-                        return reply('Hello ' + request.auth.credentials.profile.displayName);
+                        return reply.redirect('/');
                     }
                     reply('Not logged in...').code(401);    
                 }
@@ -72,8 +72,28 @@ server.register([Bell, AuthCookie], function (err) {
             method: 'GET',
             path: '/account',
             config: {
+                auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    reply(request.auth.credentials.profile);
+
+                    if(request.auth.isAuthenticated) {
+                        var account = request.auth.credentials.profile;
+                        var name = account.displayName;
+                        var email = account.email;
+                        var avatar = account.raw.avatar_url;
+                        var link = account.raw.html_url;
+                        var followers = account.raw.followers;
+                        var following = account.raw.following;
+                        
+                        return reply.view('profile', {
+                            name: name,
+                            email: email,
+                            avatar: avatar,
+                            link: link,
+                            followers: followers,
+                            following: following
+                        });
+                    }
+                    reply.redirect('/login');
                 }
             }
         },
@@ -85,9 +105,9 @@ server.register([Bell, AuthCookie], function (err) {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
                     if (request.auth.isAuthenticated) {
-                        return reply('welcome back ' + request.auth.credentials.profile.displayName);
+                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
-                    reply('hello stranger!');
+                    reply.view('homepage', {name: "visitor"});
                 }
             }
         },
@@ -110,27 +130,33 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function(request, reply) {
-                    reply.view('homepage', {name: 'Batman'});
+                     if (request.auth.isAuthenticated) {
+                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
+                    }
+                    reply.view('homepage', {name: "Batman"});
                 }
             }
-        }
+        },
 
 //routes not using
         // {
         //     method: 'GET',
-        //     path: '/{id}',
+        //     path: '/blog/{id}',
         //     handler: function (request, reply) {
         //             reply('Blog Post here ' + request.params.id);
         //         }
         // },
 
-        // {
-        //     method: 'GET',
-        //     path: '/edit',
-        //     handler: function (request, reply) {
-        //         reply('CMS page');
-        //     }
-        // },
+        {
+            method: 'GET',
+            path: '/edit',
+            config: {
+                auth: {mode: 'optional'},
+                handler: function(request, reply) {
+                    reply.view('edit');
+                }
+            }
+        }
 
         // {
         //     method: 'GET',
@@ -153,7 +179,7 @@ server.register([Bell, AuthCookie], function (err) {
         // {
         //     method: 'PUT',
         //     config: { payload: {output: 'data', parse: true} },
-        //     path: '/{id}',
+        //     path: '//blog/{id}',
         //     handler: function (request, reply) {
         //         // code here to handle post update
         //         reply('Post ' + request.params.id + ' updated');
@@ -162,7 +188,7 @@ server.register([Bell, AuthCookie], function (err) {
 
         // {
         //     method: 'DELETE',
-        //     path: '/{id}',
+        //     path: '//blog/{id}',
         //     handler: function (request, reply) {
         //         // code here to delete post
         //         reply('Post ' + request.params.id + ' deleted');

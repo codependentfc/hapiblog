@@ -2,11 +2,25 @@ extend layout
 
 block content
 	h1 Hello, #{name}!
-	form(action='edit', method='POST')
-				label Name:
-					input(type='text', name='author' required)
-				label Title:
-					input(type='text', name='title' required)
-				label Text:
-					textarea(rows='10' cols='50' name='text' required)
-				input(type='submit', value='Submit Post')
+	a.btn.btn-info(href='/login') Login with Github
+	form.form-horizontal(role='form')
+		.form-group
+			label.control-label.col-sm-2(for='author' required) Author:
+			.col-sm-10
+				input.form-control(type='text', placeholder='Enter name' required)
+		.form-group
+			label.control-label.col-sm-2(for='title') Title:
+			.col-sm-10
+				input.form-control(type='text', placeholder='Enter title' required)
+		.form-group
+			label.control-label.col-sm-2(for='content') Write something:
+			.col-sm-10
+				textarea.form-control(rows='10', placeholder='...' require)
+		.form-group
+			.col-sm-offset-2.col-sm-10
+				.checkbox
+					label Do you like chocolate?
+					input(type='checkbox')
+		.form-group
+			.col-sm-offset-2.col-sm-10
+				a.btn.btn-default(href='/edit') Submit
