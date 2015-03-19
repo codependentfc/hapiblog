@@ -24,6 +24,10 @@ block content
 	hr
 	h1 Blogposts
 	p TODO - Blogposts to display here...
+	if posts
+		.panel.panel-primary
+						.panel-heading #{post.title} | Written by: #{post.name}
+						.panel-body #{post.context}
 	hr
 	//- .panel.panel-primary
 	//- 					.panel-heading #{posttitle} | Written by: #{postname}

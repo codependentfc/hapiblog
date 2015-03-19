@@ -217,7 +217,9 @@ server.register([Bell, AuthCookie], function (err) {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
                     db.users.find(function(err, docs) {
-                        reply(docs);
+                        console.log(docs);
+                        reply.view('allposts', {posts: docs}
+                        );
                     });
                 }
             }
