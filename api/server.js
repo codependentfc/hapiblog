@@ -129,7 +129,6 @@ server.register([Bell, AuthCookie], function (err) {
                 handler: function (request, reply) {
                     if (request.auth.isAuthenticated) {
 
-                        console.log(request.payload);
                         var account = request.auth.credentials.profile;
                         var name = account.displayName;
                         var title = request.payload.title;
@@ -206,17 +205,35 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    var data;
+                    var array = [];
                     db.users.find(function(err, docs) {
-                        console.log(docs)
-                        data = docs;
+                       for(i=0;i<docs.length;i++) {
+                        console.log(JSON.stringify(docs[i]));
+                        array.push(JSON.stringify(docs[i]));
+                       }
                         });
 
-                        reply('Blog posts: ' + data);
+                        reply(array);
                 }
             }
         },
 
+        {
+            method: 'POST',
+            path: '/posts',
+            config: {
+                auth: {mode: 'optional'},
+                handler: function (request, reply) {
+                    if (request.auth.isAuthenticated) {
+                        var postname = request.auth.credentials.profile.displayName;
+                        var posttitle = request.payload.title;
+                        var postcontent = request.payload.content;
+                        return reply.view('posts', {posttitle: posttitle, postcontent: postcontent, postname: postname});
+                    }
+                    reply.view('homepage', {name: "visitor", er: "Please login to write a blog post"});
+                }
+            }
+        },
 
         {
             method: 'GET',

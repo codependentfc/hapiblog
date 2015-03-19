@@ -4,7 +4,7 @@ block content
 	h1 Hello, #{name}!
 	a.btn.btn-info(href='/login') Login with Github
 	h3 #{er}
-	form.form-horizontal(action='/', role='form', method='POST')
+	form.form-horizontal(action='/posts', role='form', method='POST')
 		.form-group
 			label.control-label.col-sm-2(for='title') Title:
 			.col-sm-10
@@ -21,7 +21,10 @@ block content
 		.form-group
 			.col-sm-offset-2.col-sm-10
 				input.btn.btn-default(type='submit', value='Submit Post')
-
-	.panel.panel-primary
-						.panel-heading #{posttitle} | Written by: #{postsname}}
-						.panel-body #{postcontent}
+	hr
+	h1 Blogposts
+		p TODO - Blogposts to display here...
+	hr
+	//- .panel.panel-primary
+	//- 					.panel-heading #{posttitle} | Written by: #{postname}
+	//- 					.panel-body #{postcontent}
