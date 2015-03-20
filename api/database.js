@@ -1,6 +1,6 @@
 
 var mongojs = require("mongojs");
-var creds = require("./creds.json");
+var creds = require("../creds.json");
 var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
 
 db.on('error',function(err) {
