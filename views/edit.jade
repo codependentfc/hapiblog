@@ -1,23 +1,26 @@
 extend layout
 
 block content
-	h1 Hello, #{name}!
+	.panel.panel-primary
+		.panel-heading
+			h1 Hello, #{name}!
+		.panel-body
+			a(href='/login' class=(name !== 'visitor' ? 'hidden btn btn-info' : 'btn btn-info') ) Login with Github
+			h3 #{er}
+			form.form-horizontal(action='/', role='form', method='POST')
+				.form-group
+					label.control-label.col-sm-2(for='title') Title:
+					.col-sm-10
+						input.form-control(type='text', placeholder='Enter title', name='title' required)
+				.form-group
+					label.control-label.col-sm-2(for='content') Write something:
+					.col-sm-10
+						textarea.form-control(rows='10', placeholder='...', name='content' required)
 
-	a(href='/login' class=(name !== 'visitor' ? 'hidden btn btn-info' : 'btn btn-info') ) Login with Github
-	h3 #{er}
-	form.form-horizontal(action='/', role='form', method='POST')
-		.form-group
-			label.control-label.col-sm-2(for='title') Title:
-			.col-sm-10
-				input.form-control(type='text', placeholder='Enter title', name='title' required)
-		.form-group
-			label.control-label.col-sm-2(for='content') Write something:
-			.col-sm-10
-				textarea.form-control(rows='10', placeholder='...', name='content' required)
+				.form-group
+					.col-sm-offset-2.col-sm-10
+						input.btn.btn-default(type='submit', value='Submit Post')
 
-		.form-group
-			.col-sm-offset-2.col-sm-10
-				input.btn.btn-default(type='submit', value='Submit Post')
 
 
 
