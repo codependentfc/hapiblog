@@ -1,13 +1,14 @@
 extend layout
 
 block content
-	.col-md-6
-		img(src='#{avatar}')
-	.col-md-6
-	ul Name: #{name}
-	ul Email: #{email}
-	ul Github account: 
-		a(href='#{link}') #{link}
-	ul Followers: #{followers}
-	ul Following: #{following}
-	//- ul Blogposts: #{blog}
+	.panel.panel-primary
+		.panel-heading #{name}
+		.panel-body
+			img(src='#{avatar}')
+		.panel-body
+			ul Email: #{email}
+			ul Github account: 
+				a(href='#{link}') #{link}
+			ul Followers: #{followers}
+			ul Following: #{following}
+			//- ul Blogposts: #{blog}
