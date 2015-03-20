@@ -13,7 +13,7 @@ lab.experiment('Invalid route', function() {
 	lab.test('Return a 404 status code', function(done) {
 
 		server.inject(options, function(response) {
-			assert.equal(response.statusCode, 404, 'it should return da 404');
+			assert.equal(response.statusCode, 404, 'it should return 404');
 			done();
 		});
 	});
