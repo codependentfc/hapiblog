@@ -1,5 +1,6 @@
 var Path = require('path');
 var jade = require('jade');
+var Joi = require('joi');
 var db = require('./database.js');
 
 module.exports = [
@@ -148,6 +149,11 @@ module.exports = [
         path: '/blog/{id}',
         config: {
             auth: {mode: 'optional'},
+            validate: {
+                params: {
+                    id: Joi.string().regex(/[0-9a-fA-F]{24}/)
+                }
+            },
             handler: function (request, reply) {
                     reply('Your blog post should have an id of: ' + request.params.id);
             }
