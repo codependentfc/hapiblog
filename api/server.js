@@ -145,21 +145,12 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-<<<<<<< HEAD
-                    if (request.auth.isAuthenticated) {
-                        console.log("database connected to: " + db.users);
-
-                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
-                    }
-                    reply.view('homepage', {name: "visitor", posts1: "Test title", posts2: "Test name", posts3: "Test content"});
-=======
                     db.getAllPosts(function(err, data){
                         if (request.auth.isAuthenticated) {
                             return reply.view('homepage', {name: request.auth.credentials.profile.displayName, posts: data});
                         }
                         reply.view('homepage', {name: "visitor"});
                     });
->>>>>>> 5e88d9eba77c0046c995a9d50f54acd96ee92d20
                 }
             }
         },
