@@ -11,7 +11,7 @@ html
 		.container
 			.row
 				.navbar
-					ul.nav.nav-pills.coyote
+					ul.nav.coyote
 						li.active(role='presentation')
 							a(href='/') Home
 						li.active(role='presentation')
@@ -29,7 +29,7 @@ html
 						if posts
 							each post in posts
 								li
-									a(href='/blog/#{post._id}') #{post.title}
+									a.posts(href='/blog/#{post._id}') #{post.title}
 						else
 							li Error loading posts
 
@@ -39,5 +39,5 @@ html
 
 	footer
 		.container
-			p.text-muted Created by:
+			p.text-muted Created by:&nbsp;
 				a.text-muted(href='http://codependentfc.github.io/') Codependent
