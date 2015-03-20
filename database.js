@@ -6,7 +6,7 @@ var creds = require("./creds.json");
 var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
 
 // Use this for local database
-var db = mongojs("mylocaldatabase", ['users']);
+// var db = mongojs("mylocaldatabase", ['users']);
 
 function user(author, title, text) {
 	this.author = author;	
