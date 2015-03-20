@@ -8,22 +8,38 @@ html
 		script(src="../public/lib/bootstrap.min.js")
 
 	body
-		header
-			.navbar
-				ul.nav.nav-pills.coyote
-					li.active(role='presentation')
-						a(href='/') Home
-					li.active(role='presentation')
-						a(href='/profile') Profile
-					li.active.pull-right(role='presentation')
-						a(href='/allposts') Blogs
-					li.active.pull-right(role='presentation')
-						a(href='/logout') Logout
-
 		.container
-			block content
+			.row
+				.navbar
+					ul.nav.nav-pills.coyote
+						li.active(role='presentation')
+							a(href='/') Home
+						li.active(role='presentation')
+							a(href='/profile') Profile
+						li.active.pull-right(role='presentation')
+							a(href='/logout') Logout
+		
+			.row
+				.col-sm-3.col-md-2
+					.navbar
+						h4 Blogposts
+						ul
+						if posts
+							each post in posts
+								li
+									if (view === 'edit')
+										a(href='/edit/#{post._id}?method=GET') #{post.title} 
+										a(href='/#{blog._id}?method=DELETE') &times;
+									else
+										a(href='/#{blog._id}?method=GET') #{post.title}
+						else
+							li Error loading posts
 
-		footer
-			.container
-				p.text-muted Created by:
-					a.text-muted(href='http://codependentfc.github.io/') Codependent
+
+				.col-sm-9.col-md-10
+					block content
+
+	footer
+		.container
+			p.text-muted Created by:
+				a.text-muted(href='http://codependentfc.github.io/') Codependent
