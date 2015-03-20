@@ -1,6 +1,6 @@
 var Path = require('path');
 var jade = require('jade');
-var db = require('../database.js');
+var db = require('./database.js');
 
 module.exports = [
 
