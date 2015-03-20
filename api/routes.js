@@ -115,7 +115,7 @@ module.exports = [
         config: {
             auth: {mode: 'optional'},
             handler: function (request, reply) {
-                db.getAllPosts(function(err2, posts){
+                
                     if (request.auth.isAuthenticated) {
 
                         var account = request.auth.credentials.profile;
@@ -124,22 +124,23 @@ module.exports = [
                         var content = request.payload.content;
 
                         db.addPost(name, title, content, function(err, data) {
-                        
-                            if (err) { 
-                                console.log(err,'Error: Post not saved.\n',name,title,content);
-                            }
-                            else {
-                                console.log("Saved Succesfully: " + data.author +" - "+ data.title + " - " + data.text);
-                            }   
+                            db.getAllPosts(function(err2, posts){
+                                if (err) { 
+                                    console.log(err,'Error: Post not saved.\n',name,title,content);
+                                    reply.view('edit', {name: request.auth.credentials.profile.displayName, posts:posts}); 
+                                }
+                                else {
+                                    console.log("Saved Succesfully: " + data.author +" - "+ data.title + " - " + data.text);
+                                    reply.view('edit', {name: request.auth.credentials.profile.displayName, posts:posts}); 
+                                }
+                            });
                         }); 
-                        
-
-                        return reply.view('edit', {name: request.auth.credentials.profile.displayName, posts:posts});
                     }
                     else {
-                        reply.view('edit', {name: "visitor", er: "Please login to write a blog post", posts:posts});
+                        db.getAllPosts(function(err2, posts){
+                            reply.view('edit', {name: "visitor", er: "Please login to write a blog post", posts:posts});
+                        });
                     }
-                });
             }
         }
     },

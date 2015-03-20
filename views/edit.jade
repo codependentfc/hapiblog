@@ -2,7 +2,8 @@ extend layout
 
 block content
 	h1 Hello, #{name}!
-	a.btn.btn-info(href='/login') Login with Github
+
+	a(href='/login' class=(name !== 'visitor' ? 'hidden btn btn-info' : 'btn btn-info') ) Login with Github
 	h3 #{er}
 	form.form-horizontal(action='/', role='form', method='POST')
 		.form-group
@@ -17,3 +18,7 @@ block content
 		.form-group
 			.col-sm-offset-2.col-sm-10
 				input.btn.btn-default(type='submit', value='Submit Post')
+
+
+
+//- .btn.btn-info
