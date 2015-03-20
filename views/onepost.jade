@@ -1,0 +1,7 @@
+extend layout
+
+block content
+	if thisPost
+			.panel.panel-primary
+							.panel-heading #{thisPost.title} | Written by: #{thisPost.author}
+							.panel-body #{thisPost.text}

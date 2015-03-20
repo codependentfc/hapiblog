@@ -1,5 +1,4 @@
 
-Other cool stuff :)
 #hapiblog
 
 Our objective for our 8th week here at Founders & Coders is to create a blog using the framework Hapi.js.

@@ -1,6 +1,7 @@
 var Path = require('path');
 var jade = require('jade');
 var Joi = require('joi');
+var mongojs = require('mongojs');
 var db = require('./database.js');
 
 module.exports = [
@@ -154,7 +155,13 @@ module.exports = [
                 }
             },
             handler: function (request, reply) {
-                    reply('Your blog post should have an id of: ' + request.params.id);
+                db.getAllPosts(function(err, data){
+                    var id = mongojs.ObjectId(request.params.id);
+                    db.getPost(id,function(err2, post){
+                        reply.view('onepost', { posts:data, thisPost: post} );
+                    });
+                });
+                    
             }
         }
     },
