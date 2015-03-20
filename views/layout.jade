@@ -27,11 +27,7 @@ html
 						if posts
 							each post in posts
 								li
-									if (view === 'edit')
-										a(href='/edit/#{post._id}?method=GET') #{post.title} 
-										a(href='/#{blog._id}?method=DELETE') &times;
-									else
-										a(href='/#{blog._id}?method=GET') #{post.title}
+									a(href='/blog/#{post._id}') #{post.title}
 						else
 							li Error loading posts
 
