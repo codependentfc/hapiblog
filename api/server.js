@@ -10,9 +10,11 @@ var AuthCookie = require('hapi-auth-cookie');
 
 var jade = require('jade');
 
-var mongojs = require("mongojs");
-var creds = require("../creds.json");
-var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
+// var mongojs = require("mongojs");
+// var creds = require("../creds.json");
+// var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
+
+var db = require('../database.js');
 
 /* $lab:coverage:off$ */
 server.connection({
@@ -61,6 +63,7 @@ server.register([Bell, AuthCookie], function (err) {
         {
             method: 'GET',
             path: '/public/css/{filename}',
+            config: {auth: {mode: 'optional'} },
             handler: function(request, reply) {
                 reply.file(__dirname + "/../public/css/" + request.params.filename);
             }
@@ -69,6 +72,7 @@ server.register([Bell, AuthCookie], function (err) {
         {
             method: 'GET',
             path: '/public/lib/{filename}',
+            config: {auth: {mode: 'optional'} },
             handler: function(request, reply) {
                 reply.file(__dirname + "/../public/lib/" + request.params.filename);
             }
@@ -86,6 +90,18 @@ server.register([Bell, AuthCookie], function (err) {
                         return reply.redirect('/');
                     }
                     reply('Not logged in...').code(401);    
+                }
+            }
+        },
+
+        {
+            method: 'GET',
+            path: '/logout',
+            config: {
+                // auth: false,
+                handler: function (request, reply) {
+                    request.auth.session.clear();
+                    reply.redirect('/');
                 }
             }
         },
@@ -129,12 +145,21 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
+<<<<<<< HEAD
                     if (request.auth.isAuthenticated) {
                         console.log("database connected to: " + db.users);
 
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
                     reply.view('homepage', {name: "visitor", posts1: "Test title", posts2: "Test name", posts3: "Test content"});
+=======
+                    db.getAllPosts(function(err, data){
+                        if (request.auth.isAuthenticated) {
+                            return reply.view('homepage', {name: request.auth.credentials.profile.displayName, posts: data});
+                        }
+                        reply.view('homepage', {name: "visitor"});
+                    });
+>>>>>>> 5e88d9eba77c0046c995a9d50f54acd96ee92d20
                 }
             }
         },
@@ -145,7 +170,6 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    console.log("is it working?");
                     if (request.auth.isAuthenticated) {
 
                         var account = request.auth.credentials.profile;
@@ -153,63 +177,20 @@ server.register([Bell, AuthCookie], function (err) {
                         var title = request.payload.title;
                         var content = request.payload.content;
 
-                        function user(name, title, content) {
-                            this.name = name;   
-                            this.title = title;
-                            this.content = content;
-                        }
-
-                        var user1 = new user(name, title, content);
-
-                        db.users.save(user1, function(err, savedUser) {
-                            if (err || !savedUser) { 
-                                console.log("Error: User " + user.author + " not saved." + err);
+                        db.addPost(name, title, content, function(err, data) {
+                            if (err) { 
+                                console.log(err,'Error: Post not saved.\n',name,title,content);
                             }
                             else {
-                                console.log("User " + savedUser.name + " has been saved successfully. " + "Blog post: " + savedUser.title + "- " + savedUser.content);
+                                console.log("Saved Succesfully: " + data.author +" - "+ data.title + " - " + data.text);
                             }    
                         });
 
-                        db.users.find(user1, function(err, users) {
-                            if ( err || !users.length) {
-                                console.log("User " + user.name + " not found.");
-                            }
-                            else { 
-                                users.forEach(function(user) {
-                                    console.log("User Found! - " + user.name);
-                                });
-                            }
-                        });
-
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
+                    else {
                     reply.view('homepage', {name: "visitor", er: "Please login to write a blog post"});
-                }
-            }
-        },
-
-        {
-            method: 'GET',
-            path: '/logout',
-            config: {
-                auth: false,
-                handler: function (request, reply) {
-                    request.auth.session.clear();
-                    reply.redirect('/');
-                }
-            }
-        },
-
-        {
-            method: 'GET',
-            path: '/jade',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function(request, reply) {
-                     if (request.auth.isAuthenticated) {
-                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
-                    reply.view('homepage', {name: "Batman"});
                 }
             }
         },
@@ -227,95 +208,16 @@ server.register([Bell, AuthCookie], function (err) {
 
         {
             method: 'GET',
-            path: '/posts',
+            path: '/allposts',
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    db.users.find(function(err, docs) {
-                        console.log(docs);
-                        reply.view('allposts', {posts: docs} );
+                    db.getAllPosts(function(err, data){
+                        reply.view('allposts', {posts: data} );
                     });
                 }
             }
         },
-
-        {
-            method: 'POST',
-            path: '/posts',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function (request, reply) {
-                    if (request.auth.isAuthenticated) {
-                        var postname = request.auth.credentials.profile.displayName;
-                        var posttitle = request.payload.title;
-                        var postcontent = request.payload.content;
-                        return reply.view('posts', {posttitle: posttitle, postcontent: postcontent, postname: postname});
-                    }
-                    reply.view('homepage', {name: "visitor", er: "Please login to write a blog post"});
-                }
-            }
-        },
-
-        {
-            method: 'GET',
-            path: '/edit',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function(request, reply) {
-                    reply.view('edit');
-                }
-            }
-        },
-
-        {
-            method: 'GET',
-            path: '/edit/{id}',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function(request, reply) {
-                    reply('Your blog post should have an id of: ' + request.params.id);
-                }
-            }
-        }
-
-//routes not using
-        // {
-        //     method: 'GET',
-        //     path: '/edit/{id}',
-        //     handler: function (request, reply) {
-        //         reply('CMS page with post: ' + request.params.id + ' loaded for editing');
-        //     }
-        // },
-
-        // {
-        //     method: 'POST',
-        //     config: { payload: {output: 'data', parse: true} },
-        //     path: '/',
-        //     handler: function (request, reply) {
-        //         // code here to handle new post
-        //         reply('New Post Added');
-        //     }
-        // },
-
-        // {
-        //     method: 'PUT',
-        //     config: { payload: {output: 'data', parse: true} },
-        //     path: '//blog/{id}',
-        //     handler: function (request, reply) {
-        //         // code here to handle post update
-        //         reply('Post ' + request.params.id + ' updated');
-        //     }
-        // },
-
-        // {
-        //     method: 'DELETE',
-        //     path: '//blog/{id}',
-        //     handler: function (request, reply) {
-        //         // code here to delete post
-        //         reply('Post ' + request.params.id + ' deleted');
-        //     }
-        // }
-
     ]);
 });
 
