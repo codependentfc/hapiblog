@@ -217,13 +217,12 @@ server.register([Bell, AuthCookie], function (err) {
 
         {
             method: 'GET',
-            path: '/posts',
+            path: '/allposts',
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    db.users.find(function(err, docs) {
-                        console.log(docs);
-                        reply.view('allposts', {posts: docs} );
+                    db.getAllPosts(function(err, data){
+                        reply.view('allposts', {posts: data} );
                     });
                 }
             }
