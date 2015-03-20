@@ -2,6 +2,8 @@
 var mongojs = require("mongojs");
 var creds = require("../creds.json");
 var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
+// Use this for local database
+// var db = mongojs("mylocaldatabase", ['users']);
 
 db.on('error',function(err) {
     console.log('database error', err);
@@ -11,13 +13,11 @@ db.on('ready',function() {
     console.log('database connected');
 });
 
-// Use this for local database
-// var db = mongojs("mylocaldatabase", ['users']);
-
 function post(author, title, text) {
 	this.author = author;
 	this.title = title;
 	this.text = text;
+	this.date = new Date();
 }
 
 function addPost(author, title, content, callback) {
