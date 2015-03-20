@@ -10,9 +10,11 @@ var AuthCookie = require('hapi-auth-cookie');
 
 var jade = require('jade');
 
-var mongojs = require("mongojs");
-var creds = require("../creds.json");
-var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
+// var mongojs = require("mongojs");
+// var creds = require("../creds.json");
+// var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
+
+var db = require('../database.js');
 
 /* $lab:coverage:off$ */
 server.connection({
@@ -61,6 +63,7 @@ server.register([Bell, AuthCookie], function (err) {
         {
             method: 'GET',
             path: '/public/css/{filename}',
+            config: {auth: {mode: 'optional'} },
             handler: function(request, reply) {
                 console.log(request.params.filename, __dirname);
                 console.log(__dirname + "/../public/css/" + request.params.filename);
@@ -71,6 +74,7 @@ server.register([Bell, AuthCookie], function (err) {
         {
             method: 'GET',
             path: '/public/lib/{filename}',
+            config: {auth: {mode: 'optional'} },
             handler: function(request, reply) {
                 console.log(request.params.filename, __dirname);
                 console.log(__dirname + "/../public/lib/" + request.params.filename);
@@ -133,12 +137,12 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    if (request.auth.isAuthenticated) {
-                        console.log("database connected to: " + db.users1);
-
-                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
-                    }
-                    reply.view('homepage', {name: "visitor", posts1: "Test title", posts2: "Test name", posts3: "Test content"});
+                    db.getAllPosts(function(err, data){
+                        if (request.auth.isAuthenticated) {
+                            return reply.view('homepage', {name: request.auth.credentials.profile.displayName, posts: data});
+                        }
+                        reply.view('homepage', {name: "visitor"});
+                    });
                 }
             }
         },
@@ -149,7 +153,6 @@ server.register([Bell, AuthCookie], function (err) {
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
-                    console.log("is it working?");
                     if (request.auth.isAuthenticated) {
 
                         var account = request.auth.credentials.profile;
@@ -157,37 +160,20 @@ server.register([Bell, AuthCookie], function (err) {
                         var title = request.payload.title;
                         var content = request.payload.content;
 
-                        function user(name, title, content) {
-                            this.name = name;   
-                            this.title = title;
-                            this.content = content;
-                        }
-
-                        var user1 = new user(name, title, content);
-
-                        db.users.save(user1, function(err, savedUser) {
-                            if (err || !savedUser) { 
-                                console.log("Error: User " + user.author + " not saved." + err);
+                        db.addPost(name, title, content, function(err, data) {
+                            if (err) { 
+                                console.log(err,'Error: Post not saved.\n',name,title,content);
                             }
                             else {
-                                console.log("User " + savedUser.name + " has been saved successfully. " + "Blog post: " + savedUser.title + "- " + savedUser.content);
+                                console.log("Saved Succesfully: " + data.author +" - "+ data.title + " - " + data.text);
                             }    
-                        });
-
-                        db.users.find(user1, function(err, users) {
-                            if ( err || !users.length) {
-                                console.log("User " + user.name + " not found.");
-                            }
-                            else { 
-                                users.forEach(function(user) {
-                                    console.log("User Found! - " + user.name);
-                                });
-                            }
                         });
 
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
+                    else {
                     reply.view('homepage', {name: "visitor", er: "Please login to write a blog post"});
+                    }
                 }
             }
         },
@@ -196,7 +182,7 @@ server.register([Bell, AuthCookie], function (err) {
             method: 'GET',
             path: '/logout',
             config: {
-                auth: false,
+                // auth: false,
                 handler: function (request, reply) {
                     request.auth.session.clear();
                     reply.redirect('/');
