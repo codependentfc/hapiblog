@@ -23,21 +23,11 @@ Let us know if you have any issues or comments
 
 ------
 
-###Version update
-* Requires github user authentication to write a post
-* Saves post into remote database
-* Views using jade and bootstrap
-* CSS now works
-
-TODO as of 19/03/15: 
-* Display all posts
-* Access individual posts
-* Modularise our code
+TODO as of 20/03/15: 
 * Joi validation
 * Github authentication - removing session cookie fully
 * Design
 * Edit/Delete posts
-* Other cool stuff :)
 
 ------
 
