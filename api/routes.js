@@ -138,7 +138,7 @@ module.exports = [
                     }
                     else {
                         db.getAllPosts(function(err2, posts){
-                            reply.view('edit', {name: "visitor", er: "Please login to write a blog post", posts:posts});
+                            reply.view('edit', {name: "visitor",     er: "Please login to write a blog post", posts:posts});
                         });
                     }
             }
