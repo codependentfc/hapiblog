@@ -62,8 +62,6 @@ server.register([Bell, AuthCookie], function (err) {
             method: 'GET',
             path: '/public/css/{filename}',
             handler: function(request, reply) {
-                console.log(request.params.filename, __dirname);
-                console.log(__dirname + "/../public/css/" + request.params.filename);
                 reply.file(__dirname + "/../public/css/" + request.params.filename);
             }
         },
@@ -72,8 +70,6 @@ server.register([Bell, AuthCookie], function (err) {
             method: 'GET',
             path: '/public/lib/{filename}',
             handler: function(request, reply) {
-                console.log(request.params.filename, __dirname);
-                console.log(__dirname + "/../public/lib/" + request.params.filename);
                 reply.file(__dirname + "/../public/lib/" + request.params.filename);
             }
         },
@@ -134,7 +130,7 @@ server.register([Bell, AuthCookie], function (err) {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
                     if (request.auth.isAuthenticated) {
-                        console.log("database connected to: " + db.users1);
+                        console.log("database connected to: " + db.users);
 
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }

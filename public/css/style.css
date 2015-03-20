@@ -1,7 +1,17 @@
+h1 {
+	color: red;
+}
+
 .coyote li {
 	display: inline-block;
 }
 
 .navbar {
 	padding: 5px;
+}
+
+h4 {
+	text-decoration: underline;
+	font-weight: bold;
+	color: red;
 }
