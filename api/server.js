@@ -1,19 +1,11 @@
 var Hapi 	= require('hapi');
 var server 	= new Hapi.Server();
-
 var Path = require('path');
 var githubcreds = require('../githubcreds.json');
-
 var Joi = require('joi');
 var Bell = require('bell');
 var AuthCookie = require('hapi-auth-cookie');
-
 var jade = require('jade');
-
-// var mongojs = require("mongojs");
-// var creds = require("../creds.json");
-// var db = mongojs(creds.dbname + ":" + creds.dbpwd + creds.dburl, ['users']);
-
 var db = require('../database.js');
 
 /* $lab:coverage:off$ */
