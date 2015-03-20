@@ -29,9 +29,9 @@ html
 								li
 									if (view === 'edit')
 										a(href='/edit/#{post._id}?method=GET') #{post.title} 
-										a(href='/#{post._id}?method=DELETE') &times;
+										a(href='/#{blog._id}?method=DELETE') &times;
 									else
-										a(href='/#{post._id}?method=GET') #{post.title}
+										a(href='/#{blog._id}?method=GET') #{post.title}
 						else
 							li Error loading posts
 
