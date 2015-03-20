@@ -33,10 +33,9 @@ function addPost(author, title, content, callback) {
 	});
 }
 
-// TODO find by object id
+
 function getPost(id,callback) {
-	
-	db.users.find(null, function(err, data){
+	db.users.find(id, function(err, data){
 		if (err) {
 			return callback(err, null);
 		}

@@ -100,6 +100,18 @@ server.register([Bell, AuthCookie], function (err) {
 
         {
             method: 'GET',
+            path: '/logout',
+            config: {
+                // auth: false,
+                handler: function (request, reply) {
+                    request.auth.session.clear();
+                    reply.redirect('/');
+                }
+            }
+        },
+
+        {
+            method: 'GET',
             path: '/profile',
             config: {
                 auth: {mode: 'optional'},
@@ -180,32 +192,6 @@ server.register([Bell, AuthCookie], function (err) {
 
         {
             method: 'GET',
-            path: '/logout',
-            config: {
-                // auth: false,
-                handler: function (request, reply) {
-                    request.auth.session.clear();
-                    reply.redirect('/');
-                }
-            }
-        },
-
-        {
-            method: 'GET',
-            path: '/jade',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function(request, reply) {
-                     if (request.auth.isAuthenticated) {
-                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
-                    }
-                    reply.view('homepage', {name: "Batman"});
-                }
-            }
-        },
-
-        {
-            method: 'GET',
             path: '/blog/{id}',
             config: {
                 auth: {mode: 'optional'},
@@ -227,84 +213,6 @@ server.register([Bell, AuthCookie], function (err) {
                 }
             }
         },
-
-        {
-            method: 'POST',
-            path: '/posts',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function (request, reply) {
-                    if (request.auth.isAuthenticated) {
-                        var postname = request.auth.credentials.profile.displayName;
-                        var posttitle = request.payload.title;
-                        var postcontent = request.payload.content;
-                        return reply.view('posts', {posttitle: posttitle, postcontent: postcontent, postname: postname});
-                    }
-                    reply.view('homepage', {name: "visitor", er: "Please login to write a blog post"});
-                }
-            }
-        },
-
-        {
-            method: 'GET',
-            path: '/edit',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function(request, reply) {
-                    reply.view('edit');
-                }
-            }
-        },
-
-        {
-            method: 'GET',
-            path: '/edit/{id}',
-            config: {
-                auth: {mode: 'optional'},
-                handler: function(request, reply) {
-                    reply('Your blog post should have an id of: ' + request.params.id);
-                }
-            }
-        }
-
-//routes not using
-        // {
-        //     method: 'GET',
-        //     path: '/edit/{id}',
-        //     handler: function (request, reply) {
-        //         reply('CMS page with post: ' + request.params.id + ' loaded for editing');
-        //     }
-        // },
-
-        // {
-        //     method: 'POST',
-        //     config: { payload: {output: 'data', parse: true} },
-        //     path: '/',
-        //     handler: function (request, reply) {
-        //         // code here to handle new post
-        //         reply('New Post Added');
-        //     }
-        // },
-
-        // {
-        //     method: 'PUT',
-        //     config: { payload: {output: 'data', parse: true} },
-        //     path: '//blog/{id}',
-        //     handler: function (request, reply) {
-        //         // code here to handle post update
-        //         reply('Post ' + request.params.id + ' updated');
-        //     }
-        // },
-
-        // {
-        //     method: 'DELETE',
-        //     path: '//blog/{id}',
-        //     handler: function (request, reply) {
-        //         // code here to delete post
-        //         reply('Post ' + request.params.id + ' deleted');
-        //     }
-        // }
-
     ]);
 });
 
