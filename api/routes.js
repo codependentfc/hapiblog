@@ -1,6 +1,7 @@
 var Path = require('path');
 var jade = require('jade');
 var db = require('./database.js');
+var Joi = require('joi');
 
 module.exports = [
 
@@ -105,16 +106,30 @@ module.exports = [
             config: {
                 auth: {mode: 'optional'},
                 handler: function (request, reply) {
+                    var schema = Joi.object().options({ abortEarly: false }).keys({
+                        title: Joi.string().min(3).max(50),
+                        content: Joi.string().max(5000)
+                    });
+
+
+
                     if (request.auth.isAuthenticated) {
 
                         var account = request.auth.credentials.profile;
                         var name = account.displayName;
-                        var title = request.payload.title;
-                        var content = request.payload.content;
 
-                        db.addPost(name, title, content, function(err, data) {
+                        var postData = {
+                            title : request.payload.title,
+                            content : request.payload.content
+                            };
+
+                        Joi.validate(postData, schema, function (err, value) { });
+
+                    
+
+                        db.addPost(name, postData.title, postData.content, function(err, data) {
                             if (err) { 
-                                console.log(err,'Error: Post not saved.\n',name,title,content);
+                                console.log(err,'Error: Post not saved.\n',name, postData.title, postData.content);
                             }
                             else {
                                 console.log("Saved Succesfully: " + data.author +" - "+ data.title + " - " + data.text);
@@ -123,6 +138,7 @@ module.exports = [
 
                         return reply.view('homepage', {name: request.auth.credentials.profile.displayName});
                     }
+
                     else {
                     reply.view('homepage', {name: "visitor", er: "Please login to write a blog post"});
                     }
@@ -153,4 +169,4 @@ module.exports = [
                 }
             }
         },
-    ]
+    ];
