@@ -68,8 +68,7 @@ module.exports = [
                         var link = account.raw.html_url;
                         var followers = account.raw.followers;
                         var following = account.raw.following;
-
-                        var blog = "blog should go here";
+                        // var blog = "blog should go here";
 
                         return reply.view('profile', {
                             name: name,
@@ -78,7 +77,7 @@ module.exports = [
                             link: link,
                             followers: followers,
                             following: following,
-                            blog: blog,
+                            // blog: blog,
 
                             posts: data
                         });
@@ -93,16 +92,16 @@ module.exports = [
 
     {
         method: 'GET',
-        path: '/',
+        path: '/edit',
         config: {
             auth: {mode: 'optional'},
             handler: function (request, reply) {
                 db.getAllPosts(function(err, data){
                     if (request.auth.isAuthenticated) {
-                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName, posts: data});
+                        return reply.view('edit', {name: request.auth.credentials.profile.displayName, posts: data});
                     }
                     else {
-                        reply.view('homepage', {name: "visitor", posts: data});
+                        reply.view('edit', {name: "visitor", posts: data});
                     }
                 });
             }
@@ -134,10 +133,10 @@ module.exports = [
                         }); 
                         
 
-                        return reply.view('homepage', {name: request.auth.credentials.profile.displayName, posts:posts});
+                        return reply.view('edit', {name: request.auth.credentials.profile.displayName, posts:posts});
                     }
                     else {
-                        reply.view('homepage', {name: "visitor", er: "Please login to write a blog post", posts:posts});
+                        reply.view('edit', {name: "visitor", er: "Please login to write a blog post", posts:posts});
                     }
                 });
             }
@@ -162,7 +161,7 @@ module.exports = [
 
     {
         method: 'GET',
-        path: '/allposts',
+        path: '/',
         config: {
             auth: {mode: 'optional'},
             handler: function (request, reply) {

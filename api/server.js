@@ -1,5 +1,5 @@
-var Hapi 	= require('hapi');
-var server 	= new Hapi.Server();
+var Hapi = require('hapi');
+var server = new Hapi.Server();
 var Path = require('path');
 var githubcreds = require('../githubcreds.json');
 var Joi = require('joi');
@@ -25,6 +25,7 @@ server.views({
 
 //Github auth, use your own github application clientId and clientSecret keys
 server.register([Bell, AuthCookie], function (err) {
+    
     if (err) {
         console.error(err);
         return process.exit(1);
@@ -35,6 +36,7 @@ server.register([Bell, AuthCookie], function (err) {
         cookie: 'hapiblog-auth',
         isSecure: false
     };
+
     server.auth.strategy('hapiblog-cookie', 'cookie', authCookieOptions);
     
     var bellAuthOptions = {
@@ -44,6 +46,7 @@ server.register([Bell, AuthCookie], function (err) {
         clientSecret: githubcreds.clientSecret,
         isSecure: false
     };
+
     server.auth.strategy('github-oauth', 'bell', bellAuthOptions);
 
     server.auth.default('hapiblog-cookie');
