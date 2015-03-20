@@ -15,7 +15,7 @@ db.on('ready',function() {
 // var db = mongojs("mylocaldatabase", ['users']);
 
 function post(author, title, text) {
-	this.author = author;	
+	this.author = author;
 	this.title = title;
 	this.text = text;
 }
@@ -35,7 +35,7 @@ function addPost(author, title, content, callback) {
 
 
 function getPost(id,callback) {
-	db.users.find(id, function(err, data){
+	db.users.findOne( {_id: id}, function(err, data){
 		if (err) {
 			return callback(err, null);
 		}
